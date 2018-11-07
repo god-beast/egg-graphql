@@ -6,9 +6,13 @@
     "configurations": [
         {
             "type": "node",
-            "request": "launch",
-            "name": "启动程序",
-            "program": "${workspaceFolder}/--title=egg-server-proxy"
-        }
+            "request": "attach",
+            "name": "Docker: Attach to Node",
+            "port": 7002,
+            "address": "localhost",
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/usr/src/app",
+            "protocol": "inspector"
+        },
     ]
 }

@@ -5,11 +5,17 @@
   "private": true,
   "dependencies": {
     "anyproxy": "^4.0.12",
+    "await-stream-ready": "^1.0.1",
     "egg": "^2.2.1",
     "egg-cors": "^2.1.1",
     "egg-http-proxy": "^0.1.0",
     "egg-proxy": "^1.1.0",
-    "egg-scripts": "^2.5.0"
+    "egg-scripts": "^2.5.0",
+    "md5": "^2.2.1",
+    "mz": "^2.7.0",
+    "mz-modules": "^2.1.0",
+    "stream-to-array": "^2.3.0",
+    "stream-wormhole": "^1.1.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",

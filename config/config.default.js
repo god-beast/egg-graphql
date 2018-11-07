@@ -19,7 +19,15 @@ module.exports = appInfo => {
   };
   // 跨域白名单设置，指定固定域名可以进行跨域访问
   config.security = {
-    domainWhiteList: [ 'http://localhost:9527' ],
+    // domainWhiteList: [ 'http://192.168.50.215' ],
+    csrf: {
+        enable: false,
+    }
+  };
+
+  config.cors = {
+      origin: '*',
+      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
   return config;
 };
