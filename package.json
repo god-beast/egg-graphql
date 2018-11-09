@@ -34,7 +34,6 @@
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-proxy",
-    "build": "egg-scripts start --port=80 --daemon --title=egg-server-proxy",
     "stop": "egg-scripts stop --title=egg-server-proxy",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
