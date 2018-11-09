@@ -8,7 +8,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
 
   // form表单图片展示和上传接口
-  app.router.get('/form', app.controller.form.show);
-  app.router.post('/form', app.controller.form.upload);
+  router.get('/form', controller.form.show);
+  router.post('/form', controller.form.upload);
 
 };

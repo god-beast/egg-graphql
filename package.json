@@ -11,6 +11,7 @@
     "egg-http-proxy": "^0.1.0",
     "egg-proxy": "^1.1.0",
     "egg-scripts": "^2.5.0",
+    "egg-static": "^2.1.1",
     "md5": "^2.2.1",
     "mz": "^2.7.0",
     "mz-modules": "^2.1.0",
@@ -33,6 +34,7 @@
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-proxy",
+    "build": "egg-scripts start --port=80 --daemon --title=egg-server-proxy",
     "stop": "egg-scripts stop --title=egg-server-proxy",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",

@@ -1,5 +1,5 @@
 'use strict';
-
+const path = require('path');
 module.exports = appInfo => {
   const config = exports = {};
 
@@ -19,7 +19,7 @@ module.exports = appInfo => {
   };
   // 跨域白名单设置，指定固定域名可以进行跨域访问
   config.security = {
-    // domainWhiteList: [ 'http://192.168.50.215' ],
+    // domainWhiteList: [ 'http://192.168.50.21
     csrf: {
         enable: false,
     }
@@ -29,5 +29,11 @@ module.exports = appInfo => {
       origin: '*',
       allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
+
+  config.static = {
+    prefix: '/',
+    dir: path.join(appInfo.baseDir, 'app/public')  
+  };
+
   return config;
 };
