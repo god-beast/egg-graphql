@@ -15,6 +15,11 @@ module.exports = appInfo => {
       target: 'http://192.168.60.143:6003',
       changeOrigin: true,
       // pathRewrite: {'^/api' : ''}
+    },
+    '/api': {
+      target: 'http://172.20.0.133:9023',
+      changeOrigin: true,
+      // pathRewrite: {'^/api' : ''}
     }
   };
   // 跨域白名单设置，指定固定域名可以进行跨域访问
