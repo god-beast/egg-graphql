@@ -12,3 +12,8 @@ exports.cors = {
     enable: true,
     package: 'egg-cors',
 };
+//mongodb模型校验
+exports.mongoose = {
+    enable: true,
+    package: 'egg-mongoose',
+};

@@ -9,6 +9,7 @@
     "egg": "^2.2.1",
     "egg-cors": "^2.1.1",
     "egg-http-proxy": "^0.1.0",
+    "egg-mongoose": "^3.1.1",
     "egg-proxy": "^1.1.0",
     "egg-scripts": "^2.5.0",
     "egg-static": "^2.1.1",
@@ -27,6 +28,10 @@
     "eslint": "^4.11.0",
     "eslint-config-egg": "^6.0.0",
     "http-proxy-middleware": "^0.19.0",
+    "lodash": "^4.17.11",
+    "utility": "^1.15.0",
+    "uuid": "^3.3.2",
+    "validator": "^10.9.0",
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {

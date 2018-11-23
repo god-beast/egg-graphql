@@ -17,7 +17,7 @@ module.exports = appInfo => {
       // pathRewrite: {'^/api' : ''}
     },
     '/api': {
-      target: 'http://172.20.0.133:9023',
+      target: 'http://172.20.0.251:9023',
       changeOrigin: true,
       // pathRewrite: {'^/api' : ''}
     }
@@ -39,6 +39,12 @@ module.exports = appInfo => {
     prefix: '/',
     dir: path.join(appInfo.baseDir, 'app/public')  
   };
+
+  config.mongoose = {
+      url: 'mongodb://127.0.0.1:27017/strapi',
+      options: {},
+  };
+
 
   return config;
 };
