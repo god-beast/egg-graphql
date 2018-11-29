@@ -5,14 +5,18 @@ module.exports = app => {
   const Schema = mongoose.Schema;
 
   const UserSchema = new Schema({
-    roles:{ type: Array ,default:['admin']},
-    token: { type: String,default:'admin' },
+    userId:{ type: String },
+    roles:{ type: Array ,default:['normal']},
+    token: { type: String,default:'developer' },
     introduction: { type: String },
     avatar: { type: String ,default:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'},
     name: { type: String },
     username: { type: String },
-    password: { type: String },
-
+    password: { type: String ,default:'123456'},
+    departmentId:{ type: Number },
+    departmentName:{ type: String },
+    office:{type: String},
+    disabled:{type:Boolean,default:false},
   });
 
   return mongoose.model('User', UserSchema);

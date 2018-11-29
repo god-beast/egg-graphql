@@ -24,4 +24,15 @@ module.exports = app => {
   router.post('/articles', controller.article.create);
   router.put('/articles/:_id', controller.article.update);
   router.delete('/articles/:_id', controller.article.destroy);
+
+  // 用户管理和权限相关
+  router.get('/department', controller.department.get);
+  router.post('/department', controller.department.create);
+  router.put('/department', controller.department.edit);
+  router.delete('/department', controller.department.delete);
+
+  router.get('/user', controller.user.get);
+  router.post('/user', controller.user.create);
+  router.put('/user', controller.user.edit);
+  router.delete('/user', controller.user.delete);
 };
