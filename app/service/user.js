@@ -20,48 +20,41 @@ class UserService extends Service {
   }
 
   async get(query) {
-    let {name,
-    username,
-    page,
-    limit}=query;
-    const querys = { 
-      name: { $in: name },
-      username : { $in: username },
+    let {
+      name,
+      username,
+      page,
+      limit
+    } = query;
+    const querys = {
+      name:name,
+      username:username
     };
-    return this.ctx.model.User.find().exec();
+    if(!querys.name){
+      delete querys.name;
+    }
+    if(!querys.username){
+      delete querys.username;
+    }
+    return this.ctx.model.User.find(querys).exec();
   }
 
 
-  async create(children) {
-    return this.ctx.model.Department.updateOne({
-      departmentId: -1
+  async create(body) {
+    return this.ctx.model.User.create(body);
+  }
+
+  async edit(body) {
+    return this.ctx.model.User.updateOne({
+      userId: body.userId
     }, {
-      children: children
+      ...body
     }).exec();
   }
 
-  async edit(type, children) {
-    if (type === 1) {
-      return this.ctx.model.Department.updateOne({
-        departmentId: -1
-      }, {
-        departmentName: children.departmentName,
-        introduction: children.introduction
-      }).exec();
-    } else {
-      return this.ctx.model.Department.updateOne({
-        departmentId: -1
-      }, {
-        children: children
-      }).exec();
-    }
-  }
-
-  async delete(children) {
-    return this.ctx.model.Department.updateOne({
-      departmentId: -1
-    }, {
-      children: children
+  async delete(userId) {
+    return this.ctx.model.User.deleteOne({
+      userId
     }).exec();
   }
 

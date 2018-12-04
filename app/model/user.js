@@ -1,9 +1,10 @@
 'use strict';
 
+
+
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
-
   const UserSchema = new Schema({
     userId:{ type: String },
     roles:{ type: Array ,default:['normal']},
@@ -13,7 +14,7 @@ module.exports = app => {
     name: { type: String },
     username: { type: String },
     password: { type: String ,default:'123456'},
-    departmentId:{ type: Number },
+    departmentId:{ type: Array,default:[-1] },
     departmentName:{ type: String },
     office:{type: String},
     disabled:{type:Boolean,default:false},

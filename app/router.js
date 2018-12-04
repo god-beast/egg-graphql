@@ -35,4 +35,7 @@ module.exports = app => {
   router.post('/user', controller.user.create);
   router.put('/user', controller.user.edit);
   router.delete('/user', controller.user.delete);
+  router.post('/disabledUser', controller.user.disabledUser);
+
+  
 };

@@ -5,14 +5,22 @@ const utility = require('utility');
 const uuid = require('uuid');
 const Controller = require('egg').Controller;
 
+
+function GenNonDuplicateID(randomLength) {
+  return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
+}
+
 class UserController extends Controller {
 
   async logout() {
     const {
       ctx
     } = this;
-    ctx.session = null;
-    ctx.logout();
+    // ctx.session = null;
+    ctx.body = {
+      code: 200,
+      data: [],
+    }
   }
 
   async login() {
@@ -72,41 +80,17 @@ class UserController extends Controller {
     }
   }
 
+
+
   async create() {
     const {
       ctx
     } = this;
-    let result = await ctx.service.department.get();
-    result = result[0];
-    let {
-      parentId,
-      departmentName,
-      introduction
-    } = ctx.request.body;
-    if (parentId != -1) {
-      let indexArray = (parentId + '').split('');
-      let flag = 0,
-        aim = result.children;
-      while (indexArray[flag]) {
-        aim = aim[indexArray[flag]];
-        flag++;
-      }
-      aim.children.push({
-        departmentId: aim.departmentId + '' + aim.children.length - 0,
-        departmentName: departmentName,
-        introduction: introduction,
-        children: [],
-        userList: []
-      })
-    } else {
-      result.children.push({
-        departmentId: result.children.length,
-        departmentName: departmentName,
-        introduction: introduction,
-        children: [],
-      })
-    }
-    await ctx.service.department.create(result.children);
+    let body = ctx.request.body;
+    // 添加userId
+    body.userId = GenNonDuplicateID(20);
+    await ctx.service.user.create(body);
+    await ctx.service.department.changeDepartmentUser(body.userId, body.name, body.departmentId);
     ctx.body = {
       code: 200,
       data: []
@@ -117,33 +101,12 @@ class UserController extends Controller {
     const {
       ctx
     } = this;
-    let result = await ctx.service.department.get();
-    result = result[0];
-    let {
-      departmentId,
-      departmentName,
-      introduction
-    } = ctx.request.body;
-    if (departmentId != -1) {
-      let indexArray = (departmentId + '').split('');
-      let flag = 0,
-        aim = result.children;
-      while (indexArray[flag]) {
-        aim = aim[indexArray[flag]];
-        flag++;
-      }
-      aim.departmentName = departmentName;
-      aim.introduction = introduction;
-      await ctx.service.department.edit(0, result.children);
-    } else {
-      await ctx.service.department.edit(1, {
-        departmentName,
-        introduction
-      });
-    }
+    let body = ctx.request.body;
+    await ctx.service.user.edit(body);
+    await ctx.service.department.changeDepartmentUser(body.userId, body.name, body.departmentId);
     ctx.body = {
       code: 200,
-      data: result[0]
+      data: []
     }
   }
 
@@ -151,21 +114,29 @@ class UserController extends Controller {
     const {
       ctx
     } = this;
-    let result = await ctx.service.department.get();
     let {
-      departmentId,
+      userId,
     } = ctx.query;
-    result = result[0];
-    let indexArray = (departmentId + '').split('');
-    let flag = 0,
-      aim = result.children;
-
-    while (aim[indexArray[flag]].children.length > 0) {
-      aim = aim[indexArray[flag]].children;
-      flag++;
+    await ctx.service.user.delete(userId);
+    await ctx.service.department.deleteUser(userId);
+    ctx.body = {
+      code: 200,
+      data: []
     }
-    aim.splice(indexArray[flag], 1);
-    await ctx.service.department.delete(result.children);
+  }
+
+  async disabledUser() {
+    const {
+      ctx
+    } = this;
+    let userId = ctx.request.body.userId;
+    console.log(typeof (ctx.request.body.disabled));
+    await ctx.model.User.updateOne({
+      userId
+    }, {
+      disabled: ctx.request.body.disabled
+    }).exec();
+
     ctx.body = {
       code: 200,
       data: []
