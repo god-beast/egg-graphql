@@ -3,12 +3,12 @@ module.exports = app => {
   const Schema = mongoose.Schema;
   
   const ArticleSchema = new Schema({
-    title: {
-      type: String
-    },
     createTime: {
       type: Date,
       default:Date.now
+    },
+    departmentId:{
+      type: Array
     },
     content: {
       type: String
@@ -19,9 +19,6 @@ module.exports = app => {
     userId: {
       type: String
     },
-    tag: {
-      type: Number
-    }
   });
 
   return mongoose.model('Article', ArticleSchema);

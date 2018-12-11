@@ -8,9 +8,24 @@ class ArticleService extends Service {
    * @return {Promise}
    */
 
-  fetchAll() {
-    return this.ctx.model.Article
-      .find({}).exec();
+  async fetchAll(query) {
+    let userList=JSON.parse(query.userId);
+    let jump=(query.limit-0)*(query.page-1);
+    let searchQuery={
+      userId:{"$in":userList},
+      createTime:query.createTime
+    }
+    if(userList.length==0){
+      delete searchQuery.userId;
+    }
+    if(!query.createTime){
+      delete searchQuery.createTime;
+    }
+    let list= await this.ctx.model.Article
+    .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit-0).exec();
+    let total= await this.ctx.model.Article.find(searchQuery).sort('-createTime')
+    .count();
+    return {list,total}
   }
 
   /**
@@ -37,13 +52,13 @@ class ArticleService extends Service {
    * @return {Promise}
    */
 
-  count(params) {
+  async countUser(params) {
     // Convert `params` object to filters compatible with Mongo.
-    const filters = strapi.utils.models.convertParams('article', params);
+    // const filters = strapi.utils.models.convertParams('article', params);
 
-    return this.ctx.model.Article
-      .count()
-      .where(filters.where);
+    let result=await app.redis.get('users');
+      // get
+    return result;
   }
 
   /**
@@ -53,15 +68,15 @@ class ArticleService extends Service {
    */
 
   async add(params) {
-    
+
     // Create relational data and return the entry.
     return this.ctx.model.Article.create({
-        title:params.title,  
-        content:params.content,  
-        author:params.author, 
-        userId:params.userId,
-        tag:params.tag, 
-    }).exec();
+      createTime: params.createTime,
+      departmentId: params.departmentId,
+      content: params.content,
+      author: params.author,
+      userId: params.userId,
+    });
   }
 
   /**

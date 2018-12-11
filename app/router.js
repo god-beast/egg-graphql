@@ -4,13 +4,12 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const { router, controller } = app;
+  const { router, controller,io } = app;
   router.get('/', controller.home.index);
 
   // form表单图片展示和上传接口
   router.get('/form', controller.form.show);
   router.post('/form', controller.form.upload);
-
 
   //登录相关接口
   router.post('/login', controller.user.login);
@@ -19,7 +18,7 @@ module.exports = app => {
 
   //日报系统相关接口
   router.get('/articles', controller.article.find);
-  router.get('/articles/count', controller.article.count);
+  router.post('/articles/userList', controller.article.userList);
   router.get('/articles/:_id', controller.article.findOne);
   router.post('/articles', controller.article.create);
   router.put('/articles/:_id', controller.article.update);
@@ -37,5 +36,6 @@ module.exports = app => {
   router.delete('/user', controller.user.delete);
   router.post('/disabledUser', controller.user.disabledUser);
 
-  
+
+  io.of('/').route('datacount', io.controller.monitor.datacount);
 };

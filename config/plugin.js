@@ -17,3 +17,18 @@ exports.mongoose = {
     enable: true,
     package: 'egg-mongoose',
 };
+// redis配置
+exports.redis = {
+    enable: true,
+    package: 'egg-redis',
+};
+// socket配置
+exports.io = {
+    enable: true,
+    package: 'egg-socket.io',
+  };
+// 邮箱配置
+  exports.email = {
+    enable: true,
+    package: 'egg-mail',
+  };

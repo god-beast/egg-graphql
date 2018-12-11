@@ -17,33 +17,65 @@ module.exports = appInfo => {
       // pathRewrite: {'^/api' : ''}
     },
     '/api': {
-      target: 'http://172.20.0.104:9024',
+      target: 'http://172.20.0.104:9023',
       changeOrigin: true,
       // pathRewrite: {'^/api' : ''}
     }
   };
   // 跨域白名单设置，指定固定域名可以进行跨域访问
   config.security = {
-    // domainWhiteList: [ 'http://192.168.50.21
+    domainWhiteList: [ 'http://192.168.1.25'],
     csrf: {
-        enable: false,
+      enable: false,
     }
   };
 
   config.cors = {
-      origin: '*',
-      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
 
   config.static = {
     prefix: '/',
-    dir: path.join(appInfo.baseDir, 'app/public')  
+    dir: path.join(appInfo.baseDir, 'app/public')
   };
 
   config.mongoose = {
-      url: 'mongodb://127.0.0.1:27017/strapi',
-      options: {},
+    url: 'mongodb://127.0.0.1:27017/strapi',
+    options: {},
   };
+
+  // redis配置
+  config.redis = {
+    client: {
+      port: 6379, // Redis port
+      host: '172.20.0.126', // Redis host
+      password: null,
+      db: 0,
+    },
+  };
+
+  // socket配置
+  config.io = {
+    init: {
+      transports: ['websocket', 'xhr-polling', 'jsonp-polling', 'htmlfile', 'flashsocket'],
+      origins: '*:*',
+    }, // passed to engine.io
+    namespace: {
+      '/': {
+        connectionMiddleware: [],
+        packetMiddleware: [],
+      },
+    },
+  };
+
+  config.email = {
+    username: '1141533358@qq.com',
+    password: 'vqctsdkjsmrbjegi',
+    host: 'smtp.qq.com',
+    sender: '1141533358@qq.com',
+    // ssl:true
+  }
 
 
   return config;
