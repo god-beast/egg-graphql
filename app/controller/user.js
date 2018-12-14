@@ -1,8 +1,8 @@
 'use strict';
 
-const validator = require('validator');
-const utility = require('utility');
-const uuid = require('uuid');
+const validator  = require('validator');
+const utility    = require('utility');
+const uuid       = require('uuid');
 const Controller = require('egg').Controller;
 
 
@@ -25,20 +25,27 @@ class UserController extends Controller {
 
   async login() {
     const {
-      ctx,
-      service,
-      config
+      ctx
     } = this;
     let result = await ctx.service.user.login(ctx.request.body);
     if (result.length) {
-      this.ctx.body = {
-        code: 200,
-        data: result[0]
+      if(result[0].disabled){
+        this.ctx.body = {
+          code   : 400,
+          data   : {},
+          message: '用户已被锁定',
+        }
+      }else{
+        this.ctx.body = {
+          code   : 200,
+          data   : result[0],
+          message: '成功登陆',
+        }
       }
     } else {
       this.ctx.body = {
-        code: 200,
-        data: {},
+        code   : 400,
+        data   : {},
         message: '用户名或密码错误'
       }
     }
@@ -53,7 +60,7 @@ class UserController extends Controller {
     const {
       ctx
     } = this;
-    let result = await ctx.service.user.login(ctx.request.body);
+    let result = await ctx.service.user.login(ctx.query);
     if (result.length) {
       this.ctx.body = {
         code: 200,
@@ -61,8 +68,8 @@ class UserController extends Controller {
       }
     } else {
       this.ctx.body = {
-        code: 200,
-        data: {},
+        code   : 200,
+        data   : {},
         message: 'token失效'
       }
     }
@@ -74,6 +81,17 @@ class UserController extends Controller {
       ctx
     } = this;
     let result = await ctx.service.user.get(ctx.query);
+
+    // ctx.connection.setTimeout(0);
+
+    // function timeout(ms) {
+    //   return new Promise((resolve) => {
+    //     setTimeout(resolve, ms);
+    //   });
+    // }
+
+    // await timeout(3*60*1000);
+    
     ctx.body = {
       code: 200,
       data: result
@@ -81,7 +99,7 @@ class UserController extends Controller {
   }
 
 
-
+  // 添加账号
   async create() {
     const {
       ctx
@@ -89,6 +107,7 @@ class UserController extends Controller {
     let body = ctx.request.body;
     // 添加userId
     body.userId = GenNonDuplicateID(20);
+    body.token  = body.userId;
     await ctx.service.user.create(body);
     await ctx.service.department.changeDepartmentUser(body.userId, body.name, body.departmentId);
     ctx.body = {
@@ -110,6 +129,10 @@ class UserController extends Controller {
     }
   }
 
+  /**
+   * @description 删除用户
+   * @memberof UserController
+   */
   async delete() {
     const {
       ctx

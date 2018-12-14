@@ -1,0 +1,7 @@
+type Article {
+  departmentId: [Int]
+  content: String!
+  author: String!
+  userId: String!
+  createTime: Date!
+}

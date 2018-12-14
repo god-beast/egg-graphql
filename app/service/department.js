@@ -13,8 +13,8 @@ class DepartmentService extends Service {
         return this.ctx.model.Department.updateOne({
             departmentId: -1
         }, {
-            children: children
-        }).exec();
+                children: children
+            }).exec();
     }
 
     async edit(type, children) {
@@ -22,15 +22,15 @@ class DepartmentService extends Service {
             return this.ctx.model.Department.updateOne({
                 departmentId: -1
             }, {
-                departmentName: children.departmentName,
-                introduction: children.introduction
-            }).exec();
+                    departmentName: children.departmentName,
+                    introduction  : children.introduction
+                }).exec();
         } else {
             return this.ctx.model.Department.updateOne({
                 departmentId: -1
             }, {
-                children: children
-            }).exec();
+                    children: children
+                }).exec();
         }
     }
 
@@ -44,13 +44,18 @@ class DepartmentService extends Service {
         return this.ctx.model.Department.updateOne({
             departmentId: -1
         }, {
-            children: children
-        }).exec();
+                children: children
+            }).exec();
     }
 
-
+    /**
+     * @description 获取用户名
+     * @function getUser
+     * @param  {type} query {description}
+     * @return {type} {description}
+     */
     async getUser(query) {
-        let userList = [];
+        let userList   = [];
         let department = await this.ctx.model.Department.find();
         // 递归添加所有的用户列表
         const countAlluser = (department) => {
@@ -62,25 +67,32 @@ class DepartmentService extends Service {
             }
         }
         // 按条件添加用户
-        let flag = 0;
-        for (let item of department) {
-            for (let single of item.userList) {
-                if (single.userId == query.userId) {
-                    if (new Set(query.roles).has('manager')) {
-                        userList.concat(item.userList);
-                    } else {
-                        userList.push(single);
+        let   flag        = 0;
+        const lookforUser = (department) => {
+            for (let item of department) {
+                for (let single of item.userList) {
+                    if (single.userId == query.userId) {
+                        if (new Set(query.roles).has('manager')) {
+                            userList.concat(item.userList);
+                        } else {
+                            userList.push(single);
+                        }
+                        flag++;
+                        break;
                     }
-                    flag++;
-                    break;
                 }
-            }
-            if (flag > 0) {
-                if (item.children.length > 0) {
-                    countAlluser(item.children);
+                if (flag > 0) {
+                    if (item.children.length > 0) {
+                        countAlluser(item.children);
+                    }
+                } else {
+                    if (item.children.length > 0) {
+                        lookforUser(item.children);
+                    }
                 }
             }
         }
+        lookforUser(department);
 
         return userList;
     }
@@ -115,8 +127,8 @@ class DepartmentService extends Service {
         return this.ctx.model.Department.updateOne({
             departmentId: -1
         }, {
-            children: deparment[0].children
-        }).exec();
+                children: deparment[0].children
+            }).exec();
     }
 
     /**
@@ -131,8 +143,8 @@ class DepartmentService extends Service {
         const {
             ctx
         } = this;
-        let deparment = await ctx.service.department.get();
-        departmentId = departmentId[departmentId.length - 1];
+        let deparment    = await ctx.service.department.get();
+            departmentId = departmentId[departmentId.length - 1];
         // 清除存在的user
         const deleteUser = (deparment) => {
             for (let item of deparment) {
@@ -167,9 +179,9 @@ class DepartmentService extends Service {
         return this.ctx.model.Department.updateOne({
             departmentId: -1
         }, {
-            children: deparment[0].children,
-            userList: deparment[0].userList
-        }).exec();
+                children: deparment[0].children,
+                userList: deparment[0].userList
+            }).exec();
     }
 }
 

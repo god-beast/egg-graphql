@@ -32,3 +32,8 @@ exports.io = {
     enable: true,
     package: 'egg-mail',
   };
+
+  exports.graphql = {
+    enable: true,
+    package: 'egg-graphql',
+  }; 

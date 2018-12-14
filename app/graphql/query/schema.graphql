@@ -1,0 +1,3 @@
+type Query {
+  getArticle(userId: [String!],createTime:Date,limit:Int!,page:Int!) : [Article]
+}

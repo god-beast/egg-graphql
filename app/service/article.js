@@ -1,6 +1,6 @@
 'use strict';
 const Service = require('egg').Service;
-const _ = require('lodash');
+const _       = require('lodash');
 class ArticleService extends Service {
   /**
    * Promise to fetch all articles.
@@ -9,21 +9,23 @@ class ArticleService extends Service {
    */
 
   async fetchAll(query) {
-    let userList=JSON.parse(query.userId);
-    let jump=(query.limit-0)*(query.page-1);
-    let searchQuery={
-      userId:{"$in":userList},
-      createTime:query.createTime
+    
+    let jump        = (query.limit-0)*(query.page-1);
+    let searchQuery = {
+      userId    : {"$in":query.userId},
+      createTime: query.createTime
     }
-    if(userList.length==0){
-      delete searchQuery.userId;
-    }
+    // if(userList.length==0){
+    //    searchQuery.userId=query.;
+    // }
     if(!query.createTime){
       delete searchQuery.createTime;
     }
-    let list= await this.ctx.model.Article
+    console.log(searchQuery);
+
+    let list = await this.ctx.model.Article
     .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit-0).exec();
-    let total= await this.ctx.model.Article.find(searchQuery).sort('-createTime')
+    let total = await this.ctx.model.Article.find(searchQuery).sort('-createTime')
     .count();
     return {list,total}
   }
@@ -56,7 +58,7 @@ class ArticleService extends Service {
     // Convert `params` object to filters compatible with Mongo.
     // const filters = strapi.utils.models.convertParams('article', params);
 
-    let result=await app.redis.get('users');
+    let result = await app.redis.get('users');
       // get
     return result;
   }
@@ -71,11 +73,11 @@ class ArticleService extends Service {
 
     // Create relational data and return the entry.
     return this.ctx.model.Article.create({
-      createTime: params.createTime,
+      createTime  : params.createTime,
       departmentId: params.departmentId,
-      content: params.content,
-      author: params.author,
-      userId: params.userId,
+      content     : params.content,
+      author      : params.author,
+      userId      : params.userId,
     });
   }
 
@@ -88,7 +90,7 @@ class ArticleService extends Service {
   async edit(params, values) {
     // Extract values related to relational data.
     const relations = _.pick(values, this.ctx.model.Article.associations.map(a => a.alias));
-    const data = _.omit(values, this.ctx.model.Article.associations.map(a => a.alias));
+    const data      = _.omit(values, this.ctx.model.Article.associations.map(a => a.alias));
 
     // Update entry with no-relational data.
     const entry = await this.ctx.model.Article.update(params, data, {
@@ -132,14 +134,14 @@ class ArticleService extends Service {
 
         const search = _.endsWith(association.nature, 'One') || association.nature === 'oneToMany' ? {
           [association.via]: data._id
-        } : {
+          }                : {
           [association.via]: {
             $in: [data._id]
           }
         };
         const update = _.endsWith(association.nature, 'One') || association.nature === 'oneToMany' ? {
           [association.via]: null
-        } : {
+          }                : {
           $pull: {
             [association.via]: data._id
           }
@@ -147,7 +149,7 @@ class ArticleService extends Service {
 
         // Retrieve model.
         const model = association.plugin ?
-          strapi.plugins[association.plugin].models[association.model || association.collection] :
+          strapi.plugins[association.plugin].models[association.model || association.collection]: 
           strapi.models[association.model || association.collection];
 
         return model.update(search, update, {
@@ -176,9 +178,9 @@ class ArticleService extends Service {
 
     const $or = Object.keys(this.ctx.model.Article.attributes).reduce((acc, curr) => {
       switch (this.ctx.model.Article.attributes[curr].type) {
-        case 'integer':
-        case 'float':
-        case 'decimal':
+        case 'integer': 
+        case 'float'  : 
+        case 'decimal': 
           if (!_.isNaN(_.toNumber(params._q))) {
             return acc.concat({
               [curr]: params._q
@@ -186,16 +188,16 @@ class ArticleService extends Service {
           }
 
           return acc;
-        case 'string':
-        case 'text':
-        case 'password':
+        case 'string'  : 
+        case 'text'    : 
+        case 'password': 
           return acc.concat({
             [curr]: {
-              $regex: params._q,
+              $regex  : params._q,
               $options: 'i'
             }
           });
-        case 'boolean':
+        case 'boolean': 
           if (params._q === 'true' || params._q === 'false') {
             return acc.concat({
               [curr]: params._q === 'true'
@@ -203,7 +205,7 @@ class ArticleService extends Service {
           }
 
           return acc;
-        default:
+        default: 
           return acc;
       }
     }, []);
