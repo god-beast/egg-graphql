@@ -10,12 +10,12 @@ class ArticleController extends Controller {
    */
 
   async find(ctx) {
-    let query        = ctx.query;
-        query.userId = JSON.parse(query.userId);
-    let result       = await ctx.service.article.fetchAll(ctx.query);
-        ctx.body     = {
-      code : 200,
-      data : result.list,
+    let query = ctx.query;
+    query.userId = JSON.parse(query.userId);
+    let result = await ctx.service.article.fetchAll(ctx.query);
+    ctx.body = {
+      code: 200,
+      data: result.list,
       total: result.total
     }
   }
@@ -41,20 +41,20 @@ class ArticleController extends Controller {
 
   async userList() {
     const { ctx, app } = this;
-    let   userList     = await ctx.service.department.getUser(ctx.request.body);
-          ctx.body     = {
+    let userList = await ctx.service.department.getUser(ctx.request.body);
+    ctx.body = {
       code: 200,
       data: userList,
     }
     return false;
-    let result       = await app.redis.smembers('content:list');
-    let departmentId = [-1,5,50];
-    let usermap      = {
-      '2' : '陈亚洲?bbnwnjj75s80000000',
-      '6' : '王文召?g6ijs4dxd9k0000000',
-      '7' : '袁嘉俊?x4phsechiyo0000000',
-      '8' : '曹仕林?3o6ehc8rg3y00000000',
-      '9' : '陈阳杰?udm1b5wy8pc0000000',
+    let result = await app.redis.smembers('content:list');
+    let departmentId = [-1, 5, 50];
+    let usermap = {
+      '2': '陈亚洲?bbnwnjj75s80000000',
+      '6': '王文召?g6ijs4dxd9k0000000',
+      '7': '袁嘉俊?x4phsechiyo0000000',
+      '8': '曹仕林?3o6ehc8rg3y00000000',
+      '9': '陈阳杰?udm1b5wy8pc0000000',
       '11': '赵豪?rqkovl76vtc0000000',
       '12': '汤剑超?7k207u859ks00000000',
       '15': '李文涛?b1gxh169j8w0000000',
@@ -63,22 +63,22 @@ class ArticleController extends Controller {
       '20': '万朱浩?1oco1lgkkfwg00000000',
     };
     let all = [];
-    // for (let item of result) {
-    //   let ff=JSON.parse(item);
-    //    let dd=usermap[ff.userId];
-    //    if(!dd){
-    //      continue;
-    //    }
-    //    let name=dd.split('?')[0];
-    //    let id=dd.split('?')[1];
-    //    ff.userId=id;
-    //    ff.author=name;
-    //    ff.departmentId=departmentId;
-    //    ff.createTime=ff.time;
-    //    delete ff.time;
-    //    all.push(ff);
-    // }
-    // ctx.service.article.insertMany(all);
+    for (let item of result) {
+      let ff=JSON.parse(item);
+       let dd=usermap[ff.userId];
+       if(!dd){
+         continue;
+       }
+       let name=dd.split('?')[0];
+       let id=dd.split('?')[1];
+       ff.userId=id;
+       ff.author=name;
+       ff.departmentId=departmentId;
+       ff.createTime=ff.time;
+       delete ff.time;
+       all.push(ff);
+    }
+    ctx.model.Article.insertMany(all);
     ctx.body = {
       code: 200,
       data: all,
@@ -92,8 +92,8 @@ class ArticleController extends Controller {
    */
 
   async create(ctx) {
-    let result        = await ctx.service.article.add(ctx.request.body);
-        this.ctx.body = {
+    let result = await ctx.service.article.add(ctx.request.body);
+    this.ctx.body = {
       code: 200,
       body: [],
     }

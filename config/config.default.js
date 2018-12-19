@@ -29,7 +29,7 @@ const path           = require('path');
   };
   // 跨域白名单设置，指定固定域名可以进行跨域访问
   config.security = {
-    domainWhiteList: ['http://192.168.1.25'],
+    domainWhiteList: ['http://192.168.50.211:9527'],
     csrf           : {
       enable: false,
     }
@@ -46,7 +46,8 @@ const path           = require('path');
   };
 
   config.mongoose = {
-    url    : 'mongodb://127.0.0.1:27017/strapi',
+    // url    : 'mongodb://127.0.0.1:27017/strapi',
+    url    : 'mongodb://192.168.60.143:50000/strapi',
     options: {},
   };
 

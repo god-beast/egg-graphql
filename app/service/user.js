@@ -26,6 +26,7 @@ class UserService extends Service {
       page,
       limit
     } = query;
+    let jump  = (limit-0)*(page-1);
     const querys = {
       name:name,
       username:username
@@ -36,7 +37,10 @@ class UserService extends Service {
     if(!querys.username){
       delete querys.username;
     }
-    return this.ctx.model.User.find(querys).exec();
+    return {
+      data:await this.ctx.model.User.find(querys).skip(jump).limit(limit-0).exec(),
+      total:await this.ctx.model.User.find(querys).count()
+    }
   }
 
 

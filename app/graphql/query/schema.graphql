@@ -1,3 +1,4 @@
 type Query {
   getArticle(userId: [String!],createTime:Date,limit:Int!,page:Int!) : [Article]
+  getUser(name:String,username:String,limit:Int!,page:Int!):[User]
 }

@@ -80,7 +80,7 @@ class UserController extends Controller {
     const {
       ctx
     } = this;
-    let result = await ctx.service.user.get(ctx.query);
+    let {data,total} = await ctx.service.user.get(ctx.query);
 
     // ctx.connection.setTimeout(0);
 
@@ -94,7 +94,8 @@ class UserController extends Controller {
     
     ctx.body = {
       code: 200,
-      data: result
+      data: data,
+      total:total
     }
   }
 

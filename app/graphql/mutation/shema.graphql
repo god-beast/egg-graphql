@@ -1,0 +1,32 @@
+type Mutation {
+
+  # department
+  createDepartment (userID: ID!, content: String!, expire: Date): Item
+  updateDepartment (id: ID!, content: String, expire: Date, done: Boolean): Item
+  deleteDepartment (id: ID!): Item 
+
+  # user
+  createUser(
+        roles: [ String!]!
+        name: String!
+        username: String!
+        password: String!
+        office: String!
+        departmentName: String!
+        departmentId: [Int!]!
+        ):User
+  deleteUser(userId: ID!):User
+  updateUser(
+        userId: ID!
+        roles: [ String!]!
+        name: String!
+        username: String!
+        password: String!
+        office: String!
+        departmentName: String!
+        departmentId: [Int!]! 
+  ):User
+
+  #article
+  createArticle():Article
+}

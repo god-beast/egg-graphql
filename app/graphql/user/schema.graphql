@@ -1,4 +1,15 @@
 type User {
-  id: ID!
+  _id: ID!
+  roles: [ String!]!
+  userId: ID
+  token: ID
+  introduction: String
+  avatar: String
   name: String!
+  username: String!
+  password: String!
+  office: String!
+  disabled: Boolean,
+  departmentName: String!
+  departmentId: [Int!]!
 }
