@@ -73,7 +73,7 @@ class DepartmentService extends Service {
                 for (let single of item.userList) {
                     if (single.userId == query.userId) {
                         if (new Set(query.roles).has('manager')) {
-                            userList.concat(item.userList);
+                            userList=userList.concat(item.userList);
                         } else {
                             userList.push(single);
                         }

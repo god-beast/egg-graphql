@@ -21,7 +21,7 @@ class ArticleService extends Service {
     if(!query.createTime){
       delete searchQuery.createTime;
     }
-    console.log(searchQuery);
+    // console.log(searchQuery);
 
     let list = await this.ctx.model.Article
     .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit-0).exec();
