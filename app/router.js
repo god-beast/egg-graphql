@@ -49,6 +49,11 @@ module.exports = app => {
   router.get('/demandList', controller.project.findDemand);
   router.post('/createDemand', controller.project.createDemand);
 
+  router.get('/tag', controller.project.getTag);
+  router.post('/tag', controller.project.createTag);
+  router.put('/tag', controller.project.updateTag);
+  router.delete('/tag', controller.project.deleteTag);
+
   // webscoket
   io.of('/').route('datacount', io.controller.monitor.datacount);
 };
