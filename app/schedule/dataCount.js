@@ -10,6 +10,11 @@ module.exports = {
         const res = await ctx.curl(url, {
             dataType: 'json',
         });
+        for (const item of res.data.data) {
+            if(item.taskStatus == 4){
+                ctx.app.email.sendEmail('任务出错', item.taskId, '1191992727@qq.com');
+            }
+        }
         // 过滤待转换的ppt
         let pptList = res.data.data.filter((item) => {
             return item.taskStatus == 2;

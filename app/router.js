@@ -36,6 +36,19 @@ module.exports = app => {
   router.delete('/user', controller.user.delete);
   router.post('/disabledUser', controller.user.disabledUser);
 
+  // 自测报告相关
+  router.get('/report', controller.report.get);
+  router.get('/oneReport', controller.report.getById);
+  router.post('/report', controller.report.create);
+  router.put('/report', controller.report.edit);
 
+  // 项目管理相关
+  router.get('/mettingList', controller.project.findMetting);
+  router.post('/createMetting', controller.project.createMetting);
+
+  router.get('/demandList', controller.project.findDemand);
+  router.post('/createDemand', controller.project.createDemand);
+
+  // webscoket
   io.of('/').route('datacount', io.controller.monitor.datacount);
 };

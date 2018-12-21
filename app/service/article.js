@@ -9,20 +9,14 @@ class ArticleService extends Service {
    */
 
   async fetchAll(query) {
-    
     let jump        = (query.limit-0)*(query.page-1);
     let searchQuery = {
       userId    : {"$in":query.userId},
       createTime: query.createTime
     }
-    // if(userList.length==0){
-    //    searchQuery.userId=query.;
-    // }
     if(!query.createTime){
       delete searchQuery.createTime;
     }
-    // console.log(searchQuery);
-
     let list = await this.ctx.model.Article
     .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit-0).exec();
     let total = await this.ctx.model.Article.find(searchQuery).sort('-createTime')
