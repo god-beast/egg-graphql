@@ -40,23 +40,80 @@ class ProjectService extends Service {
      * @param  {type} query {description}
      * @return {type} {description}
      */
-    async findDemand(query) {
-        let jump = (query.limit - 0) * (query.page - 1);
+    async findDemand(params) {
+        let jump = (params.limit - 0) * (params.page - 1);
         let searchQuery = {
-            createTime: query.createTime,
-            tag:query.tag
+            createTime: params.createTime,
+            tag:params.tag
         }
-        if (!query.createTime) {
+        if (!params.createTime) {
             delete searchQuery.createTime;
         }
-        if (!query.tag) {
+        if (!params.tag) {
             delete searchQuery.tag;
         }
-        let list = await this.ctx.model.Demand
-            .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit - 0).exec();
-        let total = await this.ctx.model.Demand.find(searchQuery).sort('-createTime')
-            .count();
-        return { list, total }
+        let total=[{count:0}];
+        // let list = await this.ctx.model.Demand
+        //     .find(searchQuery).sort('-createTime').skip(jump).limit(params.limit - 0).exec();
+        let list=  await this.ctx.model.Demand
+        .aggregate([
+            {
+            $group:{
+                _id:{createTime:'$createTime',tag:'$tag'},
+                children:{$push:{
+                    content:'$content',
+                    author:'$author',
+                    userId:'$userId',
+                    type:'$type'
+                }},
+                count:{$sum:1}
+            }
+        },{
+            $project:{
+                createTime:"$_id.createTime",
+                tag:"$_id.tag",
+                _id:0,
+                children:"$children",
+                count:"$count"
+            }
+        },{
+            $match:searchQuery
+        },{
+            $sort:{createTime:-1}
+        },{
+            $skip:jump
+        },{
+            $limit:params.limit - 0
+        }]);
+         await this.ctx.model.Demand.aggregate([{
+            $group:{
+                _id:{createTime:'$createTime',tag:'$tag'},
+                children:{$push:{
+                    content:'$content',
+                    author:'$author',
+                    userId:'$userId',
+                    type:'$type'
+                }},
+                count:{$sum:1}
+            }
+        },{
+            $project:{
+                createTime:"$_id.createTime",
+                tag:"$_id.tag",
+                _id:0,
+                children:"$children",
+                count:"$count"
+            }
+        },{
+            $match:searchQuery
+        },{
+            $count:"count"
+        }],function(err,count){
+            if(count.length>0){
+                total=count;
+            }
+        }).exec();
+        return { list, total:total[0].count }
     }
 
     /**
