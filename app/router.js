@@ -49,10 +49,17 @@ module.exports = app => {
   router.get('/demandList', controller.project.findDemand);
   router.post('/createDemand', controller.project.createDemand);
 
+  // 版本管理
   router.get('/tag', controller.project.getTag);
   router.post('/tag', controller.project.createTag);
   router.put('/tag', controller.project.updateTag);
   router.delete('/tag', controller.project.deleteTag);
+
+  // 问卷相关
+  router.get('/question', controller.question.get);
+  router.post('/question', controller.question.create);
+  router.put('/question', controller.question.update);
+  router.delete('/question', controller.question.delete);
 
   // webscoket
   io.of('/').route('datacount', io.controller.monitor.datacount);

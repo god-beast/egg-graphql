@@ -62,6 +62,7 @@ class ProjectService extends Service {
                 _id:{createTime:'$createTime',tag:'$tag'},
                 children:{$push:{
                     content:'$content',
+                    markdown:'$markdown',
                     author:'$author',
                     userId:'$userId',
                     type:'$type'

@@ -10,6 +10,9 @@ module.exports = app => {
       content: {
         type: String
       },
+      markdown:{
+        type: String
+      },
       author: {
         type: String
       },
