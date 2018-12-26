@@ -50,10 +50,10 @@ module.exports = app => {
   router.post('/createDemand', controller.project.createDemand);
 
   // 版本管理
-  router.get('/tag', controller.project.getTag);
-  router.post('/tag', controller.project.createTag);
-  router.put('/tag', controller.project.updateTag);
-  router.delete('/tag', controller.project.deleteTag);
+  router.get('/project', controller.project.getProject);
+  router.post('/project', controller.project.createProject);
+  router.put('/project', controller.project.updateProject);
+  router.delete('/project', controller.project.deleteProject);
 
   // 问卷相关
   router.get('/question', controller.question.get);
@@ -61,6 +61,11 @@ module.exports = app => {
   router.put('/question', controller.question.update);
   router.delete('/question', controller.question.delete);
 
+  // 任务相关
+  router.get('/message', controller.message.get);
+  router.post('/message', controller.message.create);
+  router.put('/message', controller.message.update);
+  router.delete('/message', controller.message.delete);
   // webscoket
   io.of('/').route('datacount', io.controller.monitor.datacount);
 };

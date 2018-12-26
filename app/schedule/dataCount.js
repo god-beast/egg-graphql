@@ -12,7 +12,7 @@ module.exports = {
         });
         for (const item of res.data.data) {
             if(item.taskStatus == 4){
-                ctx.app.email.sendEmail('任务出错', item.taskId, '1191992727@qq.com');
+                ctx.app.email.sendEmail('任务出错', item.id, '1191992727@qq.com');
             }
         }
         // 过滤待转换的ppt

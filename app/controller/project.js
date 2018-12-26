@@ -51,8 +51,8 @@ class ProjectController extends Controller {
         }
     }
 
-    async getTag(ctx) {
-        let result = await ctx.service.project.getTag(ctx.query);
+    async getProject(ctx) {
+        let result = await ctx.service.project.getProject(ctx.query);
         ctx.body = {
             code: 200,
             data: result.list,
@@ -60,24 +60,24 @@ class ProjectController extends Controller {
         }
     }
 
-    async updateTag(ctx) {
-        let result = await ctx.service.project.updateTag(ctx.request.body);
+    async updateProject(ctx) {
+        let result = await ctx.service.project.updateProject(ctx.request.body);
         ctx.body = {
             code: 200,
             data: [],
         }
     }
 
-    async deleteTag(ctx) {
-         await ctx.service.project.deleteTag(ctx.query._id);
+    async deleteProject(ctx) {
+         await ctx.service.project.deleteProject(ctx.query._id);
         ctx.body = {
             code: 200,
             data: [],
         }
     }
 
-    async createTag(ctx) {
-        let result = await ctx.service.project.createTag(ctx.request.body);
+    async createProject(ctx) {
+        let result = await ctx.service.project.createProject(ctx.request.body);
         ctx.body = {
             code: 200,
             data: [],
