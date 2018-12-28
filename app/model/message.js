@@ -17,10 +17,23 @@ module.exports = app => {
         content:{
             type: String,
         },
+        tag:{
+            type: Array,
+        },
         userId:{
+            type: String,
+        },
+        author:{
+            type: String,
+        },
+        // 任务关联用户id
+        taskUserId:{
+            type: String,
+        },
+        taskUserName:{
             type: String,
         },
     });
   
-    return mongoose.model('Mwssage', MessageSchema);
+    return mongoose.model('Message', MessageSchema);
   }

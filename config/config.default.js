@@ -46,8 +46,8 @@ const path           = require('path');
   };
 
   config.mongoose = {
-    // url    : 'mongodb://127.0.0.1:27017/strapi',
-    url    : 'mongodb://192.168.60.143:50000/strapi',
+    url    : 'mongodb://127.0.0.1:27017/strapi',
+    // url    : 'mongodb://192.168.60.143:50000/strapi',
     options: {},
   };
 

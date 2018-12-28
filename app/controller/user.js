@@ -5,7 +5,7 @@ const utility    = require('utility');
 const uuid       = require('uuid');
 const Controller = require('egg').Controller;
 
-
+const  fetch  =require('../utils/response');
 function GenNonDuplicateID(randomLength) {
   return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
 }
@@ -16,11 +16,7 @@ class UserController extends Controller {
     const {
       ctx
     } = this;
-    // ctx.session = null;
-    ctx.body = {
-      code: 200,
-      data: [],
-    }
+    fetch(200,ctx,{data:[]});
   }
 
   async login() {
@@ -30,17 +26,9 @@ class UserController extends Controller {
     let result = await ctx.service.user.login(ctx.request.body);
     if (result.length) {
       if(result[0].disabled){
-        this.ctx.body = {
-          code   : 400,
-          data   : {},
-          message: '用户已被锁定',
-        }
+        fetch(200,ctx,{data:[]},'用户已被锁定');
       }else{
-        this.ctx.body = {
-          code   : 200,
-          data   : result[0],
-          message: '成功登陆',
-        }
+        fetch(200,ctx,{data:result[0]},'成功登陆');
       }
     } else {
       this.ctx.body = {

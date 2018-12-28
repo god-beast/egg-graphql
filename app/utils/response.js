@@ -17,10 +17,12 @@ const codeMessage = {
     503: '服务不可用，服务器暂时过载或维护。',
     504: '网关超时。'
 }
-export const fetch=(code,message,ctx,...data)=>{
+const fetch=(code,ctx,data,message)=>{
     ctx.body={
         code,
-        message:codeMessage[code],
+        message:message || codeMessage[code],
         ...data,
     }
 };
+
+module.exports=fetch

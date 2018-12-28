@@ -41,25 +41,28 @@ class ProjectService extends Service {
      * @return {type} {description}
      */
     async findDemand(params) {
+        let tagArray=JSON.parse(params.tag);
         let jump = (params.limit - 0) * (params.page - 1);
         let searchQuery = {
             createTime: params.createTime,
-            tag:params.tag
+            tag:tagArray[1],
+            projectName:tagArray[0]
         }
         if (!params.createTime) {
             delete searchQuery.createTime;
         }
-        if (!params.tag) {
+        if (!tagArray[1]) {
             delete searchQuery.tag;
         }
+        if (!tagArray[0]) {
+            delete searchQuery.projectName;
+        }
         let total=[{count:0}];
-        // let list = await this.ctx.model.Demand
-        //     .find(searchQuery).sort('-createTime').skip(jump).limit(params.limit - 0).exec();
         let list=  await this.ctx.model.Demand
         .aggregate([
             {
             $group:{
-                _id:{createTime:'$createTime',tag:'$tag'},
+                _id:{createTime:'$createTime',tag:'$tag',projectName:'$projectName'},
                 children:{$push:{
                     content:'$content',
                     markdown:'$markdown',
@@ -73,6 +76,7 @@ class ProjectService extends Service {
             $project:{
                 createTime:"$_id.createTime",
                 tag:"$_id.tag",
+                projectName:"$_id.projectName",
                 _id:0,
                 children:"$children",
                 count:"$count"
@@ -88,7 +92,7 @@ class ProjectService extends Service {
         }]);
          await this.ctx.model.Demand.aggregate([{
             $group:{
-                _id:{createTime:'$createTime',tag:'$tag'},
+                _id:{createTime:'$createTime',tag:'$tag',projectName:'$projectName'},
                 children:{$push:{
                     content:'$content',
                     author:'$author',

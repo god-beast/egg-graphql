@@ -1,9 +1,9 @@
 type Mutation {
 
   # department
-  createDepartment (userID: ID!, content: String!, expire: Date): Item
-  updateDepartment (id: ID!, content: String, expire: Date, done: Boolean): Item
-  deleteDepartment (id: ID!): Item 
+  createDepartment (userID: ID!, content: String!, expire: Date): Department
+  updateDepartment (id: ID!, content: String, expire: Date, done: Boolean): Department
+  deleteDepartment (id: ID!): Department 
 
   # user
   createUser(
@@ -25,7 +25,7 @@ type Mutation {
         office: String!
         departmentName: String!
         departmentId: [Int!]! 
-  ):User
+        ):User
 
   #article
   createArticle():Article

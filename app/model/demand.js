@@ -13,6 +13,9 @@ module.exports = app => {
       markdown:{
         type: String
       },
+      projectName:{
+        type: String
+      },
       author: {
         type: String
       },

@@ -3,24 +3,17 @@ const Service = require('egg').Service;
 const _ = require('lodash');
 class MessageService extends Service {
 
-    async get(query={
-        limit:1,
-        page:0,
-        userId:null,
-    }){
-        let jump = (query.limit - 0) * (query.page - 1);
+    async get(query){
         let searchQuery = {
-            userId:query.userId
-        }
-        if (!query.title) {
-            delete searchQuery.title;
+            taskUserId:query.userId
         }
         if (!query.userId) {
-            delete searchQuery.userId;
+            delete searchQuery.taskUserId;
         }
+        console.log(searchQuery);
         let list = await this.ctx.model.Message
-            .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit - 0).exec();
-        let total = await this.ctx.model.Message.find(searchQuery).sort('-createTime')
+            .find(searchQuery).sort('-createTime').exec();
+        let total = await this.ctx.model.Message.find(searchQuery)
             .count();
         return { list, total }
     }
@@ -42,8 +35,16 @@ class MessageService extends Service {
     }
 
     async create(params){
-        return this.ctx.model.Message.create(
-            params
+        let mesList=[];
+        for (let item of params.userList) {
+            mesList.push({
+                ...params,
+                taskUserId:item.userId,
+                taskUserName:item.name,
+            })
+        }
+        return this.ctx.model.Message.insertMany(
+            mesList
         );
     }
 }
