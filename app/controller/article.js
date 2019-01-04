@@ -20,6 +20,14 @@ class ArticleController extends Controller {
     }
   }
 
+
+  async findDateList(ctx) {
+    let result = await ctx.service.article.fetchDate(ctx.query);
+    ctx.body = {
+      code: 200,
+      data: result,
+    }
+  }
   /**
    * Retrieve a article record.
    *

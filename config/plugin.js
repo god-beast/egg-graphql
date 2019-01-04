@@ -18,10 +18,10 @@ exports.mongoose = {
     package: 'egg-mongoose',
 };
 // redis配置
-// exports.redis = {
-//     enable: true,
-//     package: 'egg-redis',
-// };
+exports.redis = {
+    enable: true,
+    package: 'egg-redis',
+};
 // socket配置
 exports.io = {
     enable: true,

@@ -13,6 +13,13 @@ module.exports = app => {
             type: Number,
             default:0
         },
+        // 任务名称
+        taskName:{
+            type: String,
+        },
+        taskId:{
+            type: String,
+        },
         // 任务内容
         content:{
             type: String,
@@ -24,6 +31,9 @@ module.exports = app => {
             type: String,
         },
         author:{
+            type: String,
+        },
+        questionId:{
             type: String,
         },
         // 任务关联用户id

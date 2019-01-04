@@ -6,6 +6,7 @@ const uuid       = require('uuid');
 const Controller = require('egg').Controller;
 
 const  fetch  =require('../utils/response');
+
 function GenNonDuplicateID(randomLength) {
   return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
 }

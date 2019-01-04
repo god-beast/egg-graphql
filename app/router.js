@@ -18,6 +18,7 @@ module.exports = app => {
 
   //日报系统相关接口
   router.get('/articles', controller.article.find);
+  router.get('/articles/date', controller.article.findDateList);
   router.post('/articles/userList', controller.article.userList);
   router.get('/articles/:_id', controller.article.findOne);
   router.post('/articles', controller.article.create);
@@ -66,6 +67,10 @@ module.exports = app => {
   router.post('/message', controller.message.create);
   router.put('/message', controller.message.update);
   router.delete('/message', controller.message.delete);
+
+  router.get('/task', controller.message.getTask);
+  router.delete('/task', controller.message.deleteTask);
+
   // webscoket
   io.of('/').route('datacount', io.controller.monitor.datacount);
 };

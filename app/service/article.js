@@ -17,13 +17,30 @@ class ArticleService extends Service {
     if(!query.createTime){
       delete searchQuery.createTime;
     }
-    let list = await this.ctx.model.Article
+    let list = await this.ctx.model.NewArticle
     .find(searchQuery).sort('-createTime').skip(jump).limit(query.limit-0).exec();
-    let total = await this.ctx.model.Article.find(searchQuery).sort('-createTime')
+    let total = await this.ctx.model.NewArticle.find(searchQuery).sort('-createTime')
     .count();
     return {list,total}
   }
 
+
+  async fetchDate(query){
+    return await this.ctx.model.NewArticle.aggregate([
+      {
+        $project:{
+          userId:'$userId',
+          createTime:'$createTime',
+        }
+      },{
+        $match:{
+          userId:query.userId
+        }
+      },{
+        $sort:{createTime:1}
+      }
+    ])
+  }
   /**
    * Promise to fetch a/an article.
    *
@@ -32,13 +49,13 @@ class ArticleService extends Service {
 
   fetch(params) {
     // Select field to populate.
-    const populate = this.ctx.model.Article.associations
+    const populate = this.ctx.model.NewArticle.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
-    return this.ctx.model.Article
-      .findOne(_.pick(params, _.keys(this.ctx.model.Article.schema.paths)))
+    return this.ctx.model.NewArticle
+      .findOne(_.pick(params, _.keys(this.ctx.model.NewArticle.schema.paths)))
       .populate(populate);
   }
 
@@ -66,7 +83,7 @@ class ArticleService extends Service {
   async add(params) {
 
     // Create relational data and return the entry.
-    return this.ctx.model.Article.create({
+    return this.ctx.model.NewArticle.create({
       createTime  : params.createTime,
       departmentId: params.departmentId,
       content     : params.content,
@@ -83,16 +100,16 @@ class ArticleService extends Service {
 
   async edit(params, values) {
     // Extract values related to relational data.
-    const relations = _.pick(values, this.ctx.model.Article.associations.map(a => a.alias));
-    const data      = _.omit(values, this.ctx.model.Article.associations.map(a => a.alias));
+    const relations = _.pick(values, this.ctx.model.NewArticle.associations.map(a => a.alias));
+    const data      = _.omit(values, this.ctx.model.NewArticle.associations.map(a => a.alias));
 
     // Update entry with no-relational data.
-    const entry = await this.ctx.model.Article.update(params, data, {
+    const entry = await this.ctx.model.NewArticle.update(params, data, {
       multi: true
     });
 
     // Update relational data and return the entry.
-    return this.ctx.model.Article.updateRelations(Object.assign(params, {
+    return this.ctx.model.NewArticle.updateRelations(Object.assign(params, {
       values: relations
     }));
   }
@@ -105,14 +122,14 @@ class ArticleService extends Service {
 
   async remove(params) {
     // Select field to populate.
-    const populate = this.ctx.model.Article.associations
+    const populate = this.ctx.model.NewArticle.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
     // Note: To get the full response of Mongo, use the `remove()` method
     // or add spent the parameter `{ passRawResult: true }` as second argument.
-    const data = await this.ctx.model.Article
+    const data = await this.ctx.model.NewArticle
       .findOneAndRemove(params, {})
       .populate(populate);
 
@@ -121,7 +138,7 @@ class ArticleService extends Service {
     }
 
     await Promise.all(
-      this.ctx.model.Article.associations.map(async association => {
+      this.ctx.model.NewArticle.associations.map(async association => {
         if (!association.via || !data._id) {
           return true;
         }
@@ -165,13 +182,13 @@ class ArticleService extends Service {
     // Convert `params` object to filters compatible with Mongo.
     const filters = strapi.utils.models.convertParams('article', params);
     // Select field to populate.
-    const populate = this.ctx.model.Article.associations
+    const populate = this.ctx.model.NewArticle.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
-    const $or = Object.keys(this.ctx.model.Article.attributes).reduce((acc, curr) => {
-      switch (this.ctx.model.Article.attributes[curr].type) {
+    const $or = Object.keys(this.ctx.model.NewArticle.attributes).reduce((acc, curr) => {
+      switch (this.ctx.model.NewArticle.attributes[curr].type) {
         case 'integer': 
         case 'float'  : 
         case 'decimal': 
@@ -204,7 +221,7 @@ class ArticleService extends Service {
       }
     }, []);
 
-    return this.ctx.model.Article
+    return this.ctx.model.NewArticle
       .find({
         $or
       })
