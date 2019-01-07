@@ -27,20 +27,26 @@ class DepartmentController extends Controller {
             introduction
         } = ctx.request.body;
         if (parentId != -1) {
-            let indexArray = (parentId + '').split('');
-            let flag = 0,
-                aim = result.children;
-            while (indexArray[flag]) {
-                aim = aim[indexArray[flag]];
-                flag++;
+            let  aim = result.children;
+            const getDepartment=(aim)=>{
+                for (let  item  of aim) {
+                    if(item.departmentId==parentId){
+                        item.children.push({
+                            departmentId: item.departmentId + '' + item.children.length - 0,
+                            departmentName: departmentName,
+                            introduction: introduction,
+                            children: [],
+                            userList:[]
+                        });
+                        break;
+                    }else{
+                        if(item.children.length>0){
+                            getDepartment(item.children);
+                        }
+                    } 
+                }
             }
-            aim.children.push({
-                departmentId: aim.departmentId + '' + aim.children.length - 0,
-                departmentName: departmentName,
-                introduction: introduction,
-                children: [],
-                userList:[]
-            })
+            getDepartment(aim);
         } else {
             result.children.push({
                 departmentId: result.children.length,
