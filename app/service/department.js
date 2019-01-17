@@ -23,7 +23,7 @@ class DepartmentService extends Service {
                 departmentId: -1
             }, {
                     departmentName: children.departmentName,
-                    introduction  : children.introduction
+                    introduction: children.introduction
                 }).exec();
         } else {
             return this.ctx.model.Department.updateOne({
@@ -55,7 +55,7 @@ class DepartmentService extends Service {
      * @return {type} {description}
      */
     async getUser(query) {
-        let userList   = [];
+        let userList = [];
         let department = await this.ctx.model.Department.find();
         // 递归添加所有的用户列表
         const countAlluser = (department) => {
@@ -67,13 +67,13 @@ class DepartmentService extends Service {
             }
         }
         // 按条件添加用户
-        let   flag        = 0;
+        let flag = 0;
         const lookforUser = (department) => {
             for (let item of department) {
                 for (let single of item.userList) {
                     if (single.userId == query.userId) {
                         if (new Set(query.roles).has('manager')) {
-                            userList=userList.concat(item.userList);
+                            userList = userList.concat(item.userList);
                         } else {
                             userList.push(single);
                         }
@@ -82,7 +82,7 @@ class DepartmentService extends Service {
                     }
                 }
                 if (flag > 0) {
-                    if (item.children.length > 0) {
+                    if (item.children.length > 0 && (new Set(query.roles).has('manager') || new Set(query.roles).has('admin'))) {
                         countAlluser(item.children);
                     }
                 } else {
@@ -143,8 +143,8 @@ class DepartmentService extends Service {
         const {
             ctx
         } = this;
-        let deparment    = await ctx.service.department.get();
-            departmentId = departmentId[departmentId.length - 1];
+        let deparment = await ctx.service.department.get();
+        departmentId = departmentId[departmentId.length - 1];
         // 清除存在的user
         const deleteUser = (deparment) => {
             for (let item of deparment) {

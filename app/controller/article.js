@@ -2,6 +2,7 @@
 
 const Controller = require('egg').Controller;
 
+
 class ArticleController extends Controller {
   /**
    * Retrieve article records.
@@ -19,7 +20,6 @@ class ArticleController extends Controller {
       total: result.total
     }
   }
-
 
   async findDateList(ctx) {
     let result = await ctx.service.article.fetchDate(ctx.query);
