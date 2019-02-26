@@ -1,45 +1,41 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const fetch = require('../utils/response')
 
-
+/**
+ * @class ArticleController
+ * @extends {Controller}
+ */
 class ArticleController extends Controller {
   /**
-   * Retrieve article records.
    *
-   * @return {Object|Array}
+   *
+   * @param {*} ctx
+   * @memberof ArticleController
    */
-
   async find(ctx) {
     let query = ctx.query;
     query.userId = JSON.parse(query.userId);
     let result = await ctx.service.article.fetchAll(ctx.query);
-    ctx.body = {
-      code: 200,
+    fetch(200, ctx, {
       data: result.list,
       total: result.total
-    }
+    })
   }
 
+
+  /**
+   * @function findDateList
+   * @description 获取时间轴列表
+   * @param {*} ctx
+   * @memberof ArticleController
+   */
   async findDateList(ctx) {
     let result = await ctx.service.article.fetchDate(ctx.query);
-    ctx.body = {
-      code: 200,
-      data: result,
-    }
+    fetch(200,ctx,{data:result})
   }
-  /**
-   * Retrieve a article record.
-   *
-   * @return {Object}
-   */
 
-  async findOne(ctx) {
-    if (!ctx.params._id.match(/^[0-9a-fA-F]{24}$/)) {
-      return ctx.notFound();
-    }
-    return ctx.service.article.fetch(ctx.params);
-  }
 
   /**
    * Count article records.
@@ -50,10 +46,11 @@ class ArticleController extends Controller {
   async userList() {
     const { ctx, app } = this;
     let userList = await ctx.service.department.getUser(ctx.request.body);
-    ctx.body = {
-      code: 200,
-      data: userList,
-    }
+    fetch(200,ctx,{data:userList})
+    // ctx.body = {
+    //   code: 200,
+    //   data: userList,
+    // }
     return false;
     let result = await app.redis.smembers('content:list');
     let departmentId = [-1, 5, 50];
@@ -72,19 +69,19 @@ class ArticleController extends Controller {
     };
     let all = [];
     for (let item of result) {
-      let ff=JSON.parse(item);
-       let dd=usermap[ff.userId];
-       if(!dd){
-         continue;
-       }
-       let name=dd.split('?')[0];
-       let id=dd.split('?')[1];
-       ff.userId=id;
-       ff.author=name;
-       ff.departmentId=departmentId;
-       ff.createTime=ff.time;
-       delete ff.time;
-       all.push(ff);
+      let ff = JSON.parse(item);
+      let dd = usermap[ff.userId];
+      if (!dd) {
+        continue;
+      }
+      let name = dd.split('?')[0];
+      let id = dd.split('?')[1];
+      ff.userId = id;
+      ff.author = name;
+      ff.departmentId = departmentId;
+      ff.createTime = ff.time;
+      delete ff.time;
+      all.push(ff);
     }
     ctx.model.Article.insertMany(all);
     ctx.body = {
@@ -93,38 +90,21 @@ class ArticleController extends Controller {
     }
   }
 
-  /**
-   * Create a/an article record.
-   *
-   * @return {Object}
-   */
 
+
+  /**
+   *
+   *
+   * @param {*} ctx
+   * @memberof ArticleController
+   */
   async create(ctx) {
     let result = await ctx.service.article.add(ctx.request.body);
-    this.ctx.body = {
-      code: 200,
-      body: [],
-    }
-  }
-
-  /**
-   * Update a/an article record.
-   *
-   * @return {Object}
-   */
-
-  async update(ctx, next) {
-    return ctx.service.article.edit(ctx.params, ctx.request.body);
-  }
-
-  /**
-   * Destroy a/an article record.
-   *
-   * @return {Object}
-   */
-
-  async destroy(ctx, next) {
-    return ctx.service.article.remove(ctx.params);
+    fetch(200,ctx);
+    // this.ctx.body = {
+    //   code: 200,
+    //   body: [],
+    // }
   }
 }
 

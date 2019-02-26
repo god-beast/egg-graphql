@@ -20,10 +20,10 @@ module.exports = app => {
   router.get('/articles', controller.article.find);
   router.get('/articles/date', controller.article.findDateList);
   router.post('/articles/userList', controller.article.userList);
-  router.get('/articles/:_id', controller.article.findOne);
+  // router.get('/articles/:_id', controller.article.findOne);
   router.post('/articles', controller.article.create);
-  router.put('/articles/:_id', controller.article.update);
-  router.delete('/articles/:_id', controller.article.destroy);
+  // router.put('/articles/:_id', controller.article.update);
+  // router.delete('/articles/:_id', controller.article.destroy);
 
   // 用户管理和权限相关
   router.get('/department', controller.department.get);

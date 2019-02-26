@@ -1,18 +1,22 @@
 'use strict';
-
-const validator  = require('validator');
-const utility    = require('utility');
-const uuid       = require('uuid');
 const Controller = require('egg').Controller;
-
 const  fetch  =require('../utils/response');
 
 function GenNonDuplicateID(randomLength) {
   return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
 }
 
+/**
+ * @class UserController
+ * @extends {Controller}
+ */
 class UserController extends Controller {
 
+  /**
+   *
+   *
+   * @memberof UserController
+   */
   async logout() {
     const {
       ctx
@@ -20,6 +24,11 @@ class UserController extends Controller {
     fetch(200,ctx,{data:[]});
   }
 
+  /**
+   *
+   *
+   * @memberof UserController
+   */
   async login() {
     const {
       ctx
@@ -65,22 +74,16 @@ class UserController extends Controller {
   }
 
 
+  /**
+   *
+   *
+   * @memberof UserController
+   */
   async get() {
     const {
       ctx
     } = this;
     let {data,total} = await ctx.service.user.get(ctx.query);
-
-    // ctx.connection.setTimeout(0);
-
-    // function timeout(ms) {
-    //   return new Promise((resolve) => {
-    //     setTimeout(resolve, ms);
-    //   });
-    // }
-
-    // await timeout(3*60*1000);
-    
     ctx.body = {
       code: 200,
       data: data,
@@ -89,7 +92,11 @@ class UserController extends Controller {
   }
 
 
-  // 添加账号
+  /**
+   *
+   *
+   * @memberof UserController
+   */
   async create() {
     const {
       ctx
@@ -106,6 +113,11 @@ class UserController extends Controller {
     }
   }
 
+  /**
+   *
+   *
+   * @memberof UserController
+   */
   async edit() {
     const {
       ctx
@@ -131,29 +143,28 @@ class UserController extends Controller {
       userId,
     } = ctx.query;
     await ctx.service.user.delete(userId);
+    // 因为用户和部门相互关联，需要删除对应部门下的用户
     await ctx.service.department.deleteUser(userId);
-    ctx.body = {
-      code: 200,
-      data: []
-    }
+    fetch(200,ctx);
   }
 
+  /**
+   *
+   * @description 更新用户状态（禁用或者启用用户）
+   * @memberof UserController
+   */
   async disabledUser() {
     const {
       ctx
     } = this;
     let userId = ctx.request.body.userId;
-    console.log(typeof (ctx.request.body.disabled));
+    // console.log(typeof (ctx.request.body.disabled));
     await ctx.model.User.updateOne({
       userId
     }, {
       disabled: ctx.request.body.disabled
     }).exec();
-
-    ctx.body = {
-      code: 200,
-      data: []
-    }
+    fetch(200,ctx);
   }
 
 }

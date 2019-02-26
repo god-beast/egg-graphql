@@ -17,7 +17,7 @@ const codeMessage = {
     503: '服务不可用，服务器暂时过载或维护。',
     504: '网关超时。'
 }
-const fetch=(code,ctx,data,message)=>{
+const fetch=(code,ctx,data={data:[]},message)=>{
     ctx.body={
         code,
         message:message || codeMessage[code],

@@ -1,9 +1,17 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+const fetch = require('../utils/response')
+/**
+ * @class DepartmentController
+ * @extends {Controller}
+ */
 class DepartmentController extends Controller {
 
+    /**
+     * @description
+     * @memberof DepartmentController
+     */
     async get() {
         const {
             ctx
@@ -15,6 +23,11 @@ class DepartmentController extends Controller {
         }
     }
 
+    /**
+     *
+     * @description
+     * @memberof DepartmentController
+     */
     async create() {
         const {
             ctx
@@ -62,6 +75,11 @@ class DepartmentController extends Controller {
         }
     }
 
+    /**
+     *
+     * @description
+     * @memberof DepartmentController
+     */
     async edit() {
         const {
             ctx
@@ -96,6 +114,11 @@ class DepartmentController extends Controller {
         }
     }
 
+    /**
+     *
+     * @description
+     * @memberof DepartmentController
+     */
     async delete() {
         const {
             ctx
