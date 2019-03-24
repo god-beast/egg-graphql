@@ -133,7 +133,11 @@ class ProjectService extends Service {
         );
     }
 
-
+    /**
+     * @function getProject
+     * @param  {type} query {description}
+     * @return {type} {description}
+     */
     async getProject(query){
         let jump = (query.limit - 0) * (query.page - 1);
         let searchQuery = {
@@ -149,6 +153,11 @@ class ProjectService extends Service {
         return { list, total }
     }
 
+    /**
+     * @function updateProject
+     * @param  {type} body {description}
+     * @return {type} {description}
+     */
     async updateProject(body){
         let updateQuery={
             projectName:body.projectName,

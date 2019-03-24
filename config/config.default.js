@@ -46,20 +46,20 @@ module.exports = appInfo => {
   };
 
   config.mongoose = {
-    // url    : 'mongodb://127.0.0.1:27017/strapi',
-    url: 'mongodb://192.168.60.143:50000/strapi',
+    url    : 'mongodb://127.0.0.1:27017/strapi',
+    // url: 'mongodb://192.168.60.143:50000/strapi',
     options: {},
   };
 
   // redis配置
-  config.redis = {
-    client: {
-      port: 6379,             // Redis port
-      host: '172.20.0.126',   // Redis host
-      password: null,
-      db: 0,
-    },
-  };
+  // config.redis = {
+  //   client: {
+  //     port: 6379,             // Redis port
+  //     host: '172.20.0.126',   // Redis host
+  //     password: null,
+  //     db: 0,
+  //   },
+  // };
 
   // socket配置
   config.io = {
